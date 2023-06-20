@@ -21,10 +21,10 @@ import { Experience } from './experiences/entities/experience.entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306,
+      port: parseInt(process.env.DB_PORT) || 3306,
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
-      database: 'ams_dev',
+      database: process.env.DB_NAME || 'ams_dev',
       entities: [User, Academic, Profile, Skill, Experience],
       synchronize: true,
     }),
