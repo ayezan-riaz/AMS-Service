@@ -20,7 +20,7 @@ import { Experience } from './experiences/entities/experience.entity';
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_USER || 'localhost',
+      host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT) || 3306,
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
