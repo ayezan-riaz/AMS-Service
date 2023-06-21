@@ -74,4 +74,8 @@ export class UserService {
   remove(id: number) {
     return this.userRepository.delete({ id });
   }
+
+  // doLook(e: string) {
+  //   return this.userRepository.findOneBy({ uni_email: e });
+  // }
 }

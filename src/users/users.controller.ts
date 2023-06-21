@@ -128,4 +128,9 @@ export class UserController {
     console.log(file);
     return this.userService.updateProfile(req.user.sub, file);
   }
+
+  // @Get('uni/:e')
+  // doLook(@Param('e') e: string) {
+  //   return this.userService.doLook(e);
+  // }
 }
