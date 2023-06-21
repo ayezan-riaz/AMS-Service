@@ -70,4 +70,11 @@ export class AppController {
     const { name, sub, email } = user;
     return { name, sub, email };
   }
+
+  @Get()
+  main() {
+    return `This is a deployed Service for Alumni Management System,
+    to understand all api's visit documentation => 
+    " https://ams-service-production.up.railway.app/api" `;
+  }
 }
