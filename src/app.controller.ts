@@ -67,8 +67,8 @@ export class AppController {
   getHello(@Req() req: any): any {
     const user = req.user;
     console.log(user);
-    const { name, sub, email } = user;
-    return { name, sub, email };
+    const { sub, eml, sys, sts, iat, exp } = user;
+    return { sub, eml, sys, sts, iat, exp };
   }
 
   @Get()
