@@ -45,18 +45,25 @@ export class ProfilesService {
   }
 
   findAll() {
-    return `This action returns all profiles`;
+    return this.profileRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} profile`;
+    return this.profileRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
   }
 
   update(id: number, updateProfileDto: UpdateProfileDto) {
-    return `This action updates a #${id} profile`;
+    return this.profileRepository.update(id, updateProfileDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} profile`;
+    return this.profileRepository.delete(id);
+  }
+
+  async updateResume(id: number, file: Express.Multer.File) {
+    return this.profileRepository.update({ id }, { resume: file.filename });
   }
 }

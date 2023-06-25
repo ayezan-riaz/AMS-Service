@@ -14,6 +14,7 @@ import { SkillsModule } from './skills/skills.module';
 import { Skill } from './skills/entities/skill.entity';
 import { ExperiencesModule } from './experiences/experiences.module';
 import { Experience } from './experiences/entities/experience.entity';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { Experience } from './experiences/entities/experience.entity';
     ProfilesModule,
     SkillsModule,
     ExperiencesModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

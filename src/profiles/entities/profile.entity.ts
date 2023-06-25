@@ -29,6 +29,12 @@ export class Profile {
   @Column()
   timezone: string;
 
+  @ApiProperty({ description: 'Resume' })
+  @Column({
+    nullable: true,
+  })
+  resume: string;
+
   @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;

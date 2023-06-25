@@ -10,5 +10,6 @@ import FilesHelper from 'files/FilesHelper';
   imports: [TypeOrmModule.forFeature([Skill, User])],
   controllers: [SkillsController],
   providers: [SkillsService, FilesHelper],
+  exports: [SkillsService], //As we need to use skillService in interceptors
 })
 export class SkillsModule {}

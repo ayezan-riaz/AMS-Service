@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
 import { Skill } from './entities/skill.entity';
+import { constants } from 'utils/constants';
 
 @Injectable()
 export class SkillsService {
@@ -43,5 +44,20 @@ export class SkillsService {
     if (!delUser.affected)
       throw new HttpException('Skill not found', HttpStatus.BAD_REQUEST);
     return delUser;
+  }
+
+  async updateCertificate(id: number, file: Express.Multer.File) {
+    return this.skillRepository.update(
+      { id },
+      { certificate: file.filename, has_certificate: true },
+    );
+  }
+
+  async findSkillWithUser(id: number) {
+    let skill = await this.skillRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    return skill;
   }
 }

@@ -1,11 +1,13 @@
 import { Controller, Get, Post, UseGuards, Req, Body } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { AuthUser } from './auth/decorator/user.decorator';
 import { LoginDto } from './auth/dto/login.dto';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
+import { MailService } from './mail/mail.service';
 import { User } from './users/entities/users.entity';
 
 // const user = {
@@ -28,7 +30,11 @@ import { User } from './users/entities/users.entity';
 @ApiTags('Auth')
 @Controller()
 export class AppController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    //private readonly appService: AppService,
+    private readonly mailService: MailService,
+  ) {}
 
   //POST /login
   @UseGuards(LocalAuthGuard)
@@ -76,5 +82,10 @@ export class AppController {
     return `This is a deployed Service for Alumni Management System,
     to understand all api's visit documentation => 
     " https://ams-service-production.up.railway.app/api" `;
+  }
+
+  @Get('sendMail')
+  sendMail() {
+    return this.mailService.sendMail();
   }
 }

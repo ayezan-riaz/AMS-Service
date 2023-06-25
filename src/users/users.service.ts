@@ -4,6 +4,7 @@ import { validate } from 'class-validator';
 import FilesHelper from 'files/FilesHelper';
 import { parse } from 'path';
 import { Repository } from 'typeorm';
+import { constants } from 'utils/constants';
 import { CreateUserParams, UpdateUserParams } from 'utils/types';
 import { User } from './entities/users.entity';
 
@@ -67,7 +68,12 @@ export class UserService {
     return this.userRepository.update({ id }, { ...userDetails, role: 1 });
   }
 
-  updateProfile(id: number, file: Express.Multer.File) {
+  async updateAvatar(id: number, file: Express.Multer.File) {
+    // const user = await this.userRepository.findOneBy({ id });
+    // if (user && user.avatar != 'default/avatar.jpg') {
+    //   const fileSys = new FilesHelper();
+    //   fileSys.removeFolderOrFile(constants.UPLOAD_LOCATION + user.avatar);
+    // }
     return this.userRepository.update({ id }, { avatar: file.filename });
   }
 

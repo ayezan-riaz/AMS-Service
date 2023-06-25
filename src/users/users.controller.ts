@@ -93,26 +93,31 @@ export class UserController {
     return this.userService.remove(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post('upload')
+  //@UseGuards(JwtAuthGuard)
+  @Post(':id/uploadProfilePic')
+  @ApiOkResponse({
+    description:
+      'Avatar Upload Successfully - Request Body: multipart/form-data, Field Name: file',
+  })
   @UseInterceptors(
-    FileInterceptor('profileImage', {
+    FileInterceptor('file', {
       storage: diskStorage({
         destination: constants.UPLOAD_LOCATION,
         filename: (req: any, file, cb) => {
-          //const subfolder = req.user.sub + '-' + req.user.name;
-          const unique = new Date().getTime();
           const fn = parse(file.originalname);
-          const filename = `${req.user.sub}/${unique}-${fn.name}${fn.ext}`;
+          const filename = `${req.params.id}/avatar/profilePic${fn.ext}`;
           const fileSys = new FilesHelper();
-          fileSys.createAlumniFolder(req.user);
-          fileSys.removeOldAvatar(constants.UPLOAD_LOCATION + req.user.avatar);
+          fileSys.removeFolderOrFile(
+            constants.UPLOAD_LOCATION + req.params.id + '/avatar',
+          );
+          fileSys.createAlumniProfileFolder({ id: req.params.id });
           cb(null, filename);
         },
       }),
     }),
   )
   uploadFile(
+    @Param('id', ParseIntPipe) id: string,
     @Request() req,
     @UploadedFile(
       new ParseFilePipe({
@@ -124,10 +129,44 @@ export class UserController {
     )
     file: Express.Multer.File,
   ) {
-    console.log('Pathcc: ' + process.env.UPLOAD_LOCATION);
-    console.log(file);
-    return this.userService.updateProfile(req.user.sub, file);
+    return this.userService.updateAvatar(+id, file);
   }
+
+  // @UseGuards(JwtAuthGuard)
+  // @Post('uploadProfilePic')
+  // @UseInterceptors(
+  //   FileInterceptor('profileImage', {
+  //     storage: diskStorage({
+  //       destination: constants.UPLOAD_LOCATION,
+  //       filename: (req: any, file, cb) => {
+  //         //const subfolder = req.user.sub + '-' + req.user.name;
+  //         const unique = new Date().getTime();
+  //         const fn = parse(file.originalname);
+  //         const filename = `${req.user.sub}/${unique}-${fn.name}${fn.ext}`;
+  //         const fileSys = new FilesHelper();
+  //         fileSys.createAlumniFolder(req.user);
+  //         fileSys.removeOldAvatar(constants.UPLOAD_LOCATION + req.user.avatar);
+  //         cb(null, filename);
+  //       },
+  //     }),
+  //   }),
+  // )
+  // uploadFile(
+  //   @Request() req,
+  //   @UploadedFile(
+  //     new ParseFilePipe({
+  //       validators: [
+  //         new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+  //         new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 4 }),
+  //       ],
+  //     }),
+  //   )
+  //   file: Express.Multer.File,
+  // ) {
+  //   console.log('Pathcc: ' + process.env.UPLOAD_LOCATION);
+  //   console.log(file);
+  //   return this.userService.updateProfile(req.user.sub, file);
+  // }
 
   // @Get('uni/:e')
   // doLook(@Param('e') e: string) {
