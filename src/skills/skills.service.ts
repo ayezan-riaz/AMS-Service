@@ -33,7 +33,11 @@ export class SkillsService {
     if (!user)
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     return this.skillRepository.find({
-      where: { user },
+      where: {
+        user: {
+          id,
+        },
+      },
     });
   }
 
