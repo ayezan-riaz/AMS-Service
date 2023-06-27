@@ -54,6 +54,15 @@ export class SkillsController {
     return this.skillsService.findAll();
   }
 
+  @Get('user/:userId')
+  @ApiOkResponse({
+    description: 'All Skills for a User',
+    type: [Skill],
+  })
+  findAllforUser(@Param('userId') id: string) {
+    return this.skillsService.findAllforUser(+id);
+  }
+
   @Get(':id')
   @ApiOkResponse({ description: 'Skill by Id', type: Skill })
   @ApiBadRequestResponse({ description: 'Skill Not Found' })

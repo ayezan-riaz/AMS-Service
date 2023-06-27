@@ -28,6 +28,15 @@ export class SkillsService {
     return this.skillRepository.find();
   }
 
+  async findAllforUser(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    return this.skillRepository.find({
+      where: { user },
+    });
+  }
+
   async findOne(id: number) {
     const skill = await this.skillRepository.findOneBy({ id });
     if (!skill)

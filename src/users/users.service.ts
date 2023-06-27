@@ -47,7 +47,37 @@ export class UserService {
     //const user = await this.userRepository.findOneBy({ id }); or
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: ['profile', 'skills', 'academics'],
+      //relations: ['profile', 'skills', 'academics'],
+    });
+    if (user) return user;
+    else throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+  }
+
+  async findOneWithSkills(id: number) {
+    //const user = await this.userRepository.findOneBy({ id }); or
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['skills'],
+    });
+    if (user) return user;
+    else throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+  }
+
+  async findOneWithAcademics(id: number) {
+    //const user = await this.userRepository.findOneBy({ id }); or
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['academics'],
+    });
+    if (user) return user;
+    else throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+  }
+
+  async findOneWithProfile(id: number) {
+    //const user = await this.userRepository.findOneBy({ id }); or
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['profile'],
     });
     if (user) return user;
     else throw new HttpException('User not found', HttpStatus.BAD_REQUEST);

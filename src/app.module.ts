@@ -15,6 +15,8 @@ import { Skill } from './skills/entities/skill.entity';
 import { ExperiencesModule } from './experiences/experiences.module';
 import { Experience } from './experiences/entities/experience.entity';
 import { MailModule } from './mail/mail.module';
+import { RegistrationsModule } from './registrations/registrations.module';
+import { Registration } from './registrations/entities/registration.entity';
 
 @Module({
   imports: [
@@ -26,7 +28,7 @@ import { MailModule } from './mail/mail.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME || 'ams_dev',
-      entities: [User, Academic, Profile, Skill, Experience],
+      entities: [User, Academic, Profile, Skill, Experience, Registration],
       synchronize: true,
     }),
     UserModule,
@@ -36,6 +38,7 @@ import { MailModule } from './mail/mail.module';
     SkillsModule,
     ExperiencesModule,
     MailModule,
+    RegistrationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

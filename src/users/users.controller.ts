@@ -31,6 +31,7 @@ import { multerOptions } from 'files/muttler.config';
 import { diskStorage } from 'multer';
 import { extname, parse } from 'path';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Skill } from 'src/skills/entities/skill.entity';
 import { DeleteResult } from 'typeorm';
 import { constants } from 'utils/constants';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -66,6 +67,36 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'User Not Found' })
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
+  }
+
+  @Get(':id/skills')
+  @ApiOkResponse({
+    description: 'User with Skills by Id',
+    type: 'user with skills',
+  })
+  @ApiBadRequestResponse({ description: 'User Not Found' })
+  findOneS(@Param('id') id: string) {
+    return this.userService.findOneWithSkills(+id);
+  }
+
+  @Get(':id/academics')
+  @ApiOkResponse({
+    description: 'User with Academics by Id',
+    type: 'user with academics',
+  })
+  @ApiBadRequestResponse({ description: 'User Not Found' })
+  findOneA(@Param('id') id: string) {
+    return this.userService.findOneWithAcademics(+id);
+  }
+
+  @Get(':id/profile')
+  @ApiOkResponse({
+    description: 'User with Profile by Id',
+    type: 'user with profile',
+  })
+  @ApiBadRequestResponse({ description: 'User Not Found' })
+  findOneP(@Param('id') id: string) {
+    return this.userService.findOneWithProfile(+id);
   }
 
   @Get('email/:email')

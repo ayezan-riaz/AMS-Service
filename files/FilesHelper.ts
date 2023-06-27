@@ -53,4 +53,13 @@ export default class {
       console.log('File deleted!');
     });
   }
+
+  createGeneralFolder(path: string) {
+    let dir = this.workDir + path;
+    if (!this.fs.existsSync(dir)) {
+      this.fs.mkdirSync(dir, { recursive: true });
+      return true;
+    }
+    return false;
+  }
 }
