@@ -80,8 +80,9 @@ export class AppController {
   @Get()
   main() {
     return `This is a deployed Service for Alumni Management System,
-    to understand all api's visit documentation => 
-    " https://ams-service-production.up.railway.app/api" `;
+    " https://ams-service-production.up.railway.app/api " 
+    is no longer active, the new root url is : => 
+    " https://amsbackend-ghub.onrender.com/api "`;
   }
 
   @Get('sendMail')
