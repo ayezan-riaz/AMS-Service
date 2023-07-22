@@ -15,7 +15,9 @@ export class DoesUniEmailExists implements ValidatorConstraintInterface {
     @InjectRepository(Registration)
     private registrationRepository: Repository<Registration>,
   ) {}
-  async validate(uni_email: string, args: ValidationArguments) {
+  async validate(uni_reg_id: string, args: ValidationArguments) {
+    if (uni_reg_id.length != 8) return false;
+    let uni_email = uni_reg_id.toLowerCase() + '@dsu.edu.pk';
     const regUser = await this.registrationRepository.findOneBy({ uni_email });
     if (regUser) return true;
     return false;

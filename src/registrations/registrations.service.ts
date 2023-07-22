@@ -32,7 +32,8 @@ export class RegistrationsService {
     return this.registrationRepository.save(regUser);
   }
 
-  async verifyUniEmail({ uni_email }: VerifyUniEmailDto) {
+  async verifyUniEmail({ uni_reg_id }: VerifyUniEmailDto) {
+    let uni_email = uni_reg_id.toLowerCase() + '@dsu.edu.pk';
     const my_token = this.genToken(40);
     this.mailService.sendVerificationEmail(uni_email, my_token, 'internal');
     await this.registrationRepository.increment(

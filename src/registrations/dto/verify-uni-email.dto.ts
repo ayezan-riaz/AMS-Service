@@ -5,13 +5,15 @@ import { IsUniEmailUnique, UniEmailAvailable } from './IsUniEmailUnique';
 
 export class VerifyUniEmailDto {
   @ApiProperty({
-    description: 'University Email / Verification Email',
-    example: 'saad.luqman@dsu.edu.pk',
+    //description: 'University Email / Verification Email',
+    description: 'University Id / Verification Id',
+    example: 'SE102293',
   })
-  @IsEmail()
+  //@IsEmail()
   @IsNotEmpty()
   @UniEmailExists({
-    message: 'Requested Email not exists in Examination Records: Registration',
+    message:
+      'Requested Email not exists in Examination Records: Registration or Format Issue',
   })
-  uni_email: string;
+  uni_reg_id: string;
 }
