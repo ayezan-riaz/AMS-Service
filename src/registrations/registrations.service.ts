@@ -43,10 +43,13 @@ export class RegistrationsService {
     );
     await this.registrationRepository.update({ uni_email }, { step: 1 });
 
-    return await this.registrationRepository.update(
+    await this.registrationRepository.update(
       { uni_email },
       { uni_token: my_token },
     );
+
+    //change this back once done with frontend
+    return this.registrationRepository.findOneBy({ uni_email });
   }
 
   async validateUniEmail(token: string) {
