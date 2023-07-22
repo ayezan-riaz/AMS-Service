@@ -41,6 +41,15 @@ import { VerifyNewAccountDto } from './dto/verify-new-account.dto';
 export class RegistrationsController {
   constructor(private readonly registrationsService: RegistrationsService) {}
 
+  @Get()
+  @ApiOkResponse({
+    description: 'All Registration',
+    type: [Registration],
+  })
+  findAll() {
+    return this.registrationsService.findAll();
+  }
+
   @Post()
   @ApiCreatedResponse({
     description: 'Create Registered Records',

@@ -145,7 +145,7 @@ export class RegistrationsService {
   }
 
   findAll() {
-    return `This action returns all registrations`;
+    return this.registrationRepository.find();
   }
 
   findOne(id: number) {
