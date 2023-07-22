@@ -3,6 +3,8 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -19,6 +21,8 @@ export class ProfileResumeUserInterceptor implements NestInterceptor {
   ): Promise<Observable<any>> {
     const req = context.switchToHttp().getRequest();
     const profile_user = await this.profilesService.findOne(req.params.id);
+    if (!profile_user)
+      throw new HttpException('Profile not found', HttpStatus.BAD_REQUEST);
 
     if (profile_user)
       req.custom = {

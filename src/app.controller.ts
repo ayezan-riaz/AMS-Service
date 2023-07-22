@@ -47,10 +47,7 @@ export class AppController {
     description: 'Authentication Failed',
   })
   //  login(@Req() req: Request): Promise<{ access_token: string }> { // adding @Body tag just for swagger docs
-  login(
-    @Req() req: Request,
-    @Body() loginDto: LoginDto,
-  ): Promise<{ access_token: string }> {
+  login(@Req() req: Request, @Body() loginDto: LoginDto) {
     console.log(req); //local strategy return the user after validating it
     // TODO: return JWT access Token once user is validated
     return this.authService.login(req.user);
@@ -85,8 +82,8 @@ export class AppController {
     " https://amsbackend-ghub.onrender.com/api "`;
   }
 
-  @Get('sendMail')
+  @Post('sendMail')
   sendMail() {
-    return this.mailService.sendMail();
+    return this.mailService.sendMail('saad90@mailinator.com');
   }
 }

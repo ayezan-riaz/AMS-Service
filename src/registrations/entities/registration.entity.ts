@@ -45,7 +45,7 @@ export class Registration {
     example: '2018-06-01 00:00:00',
   })
   @Column()
-  resitration_time: Date;
+  registration_time: Date;
 
   @ApiProperty({
     description: 'Time of Graduation',
@@ -58,13 +58,45 @@ export class Registration {
   @Column()
   cgpa: number;
 
-  @ApiProperty({ description: 'Count of email sent', example: '0' })
+  @ApiProperty({ description: 'Registartion Step', example: '0' })
   @Column({ default: 0 })
-  email_sent: number;
+  step: number;
+
+  @ApiProperty({
+    description: 'uni_token',
+    example: '40charsrc92oqaltm6bwgzf1idgon0wiak0u0o64',
+  })
+  @Column({ length: 40, nullable: true })
+  uni_token: string;
+
+  @ApiProperty({ description: 'uni verified', example: 'false' })
+  @Column({ default: false })
+  uni_verified: boolean;
+
+  @ApiProperty({
+    description: 'Count of uni verification email sent',
+    example: '0',
+  })
+  @Column({ default: 0 })
+  uni_email_sent: number;
+
+  @ApiProperty({
+    description: 'email_token',
+    example: '40charsrc92oqaltm6bwgzf1idgon0wiak0u0o64',
+  })
+  @Column({ length: 40, nullable: true })
+  email_token: string;
 
   @ApiProperty({ description: 'email verified', example: 'false' })
   @Column({ default: false })
   email_verified: boolean;
+
+  @ApiProperty({
+    description: 'Count of account verification email sent',
+    example: '0',
+  })
+  @Column({ default: 0 })
+  email_sent: number;
 
   @ApiProperty()
   @CreateDateColumn()

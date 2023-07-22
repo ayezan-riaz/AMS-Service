@@ -46,12 +46,28 @@ export default class {
   }
 
   removeFolderOrFile(path: string) {
-    // path is  "files/alumni/47/avatar" here we delete the whole avatar folder
-    this.fs.unlink(path, function (err) {
-      if (err) console.log(err);
-      // if no error, file has been deleted successfully
-      console.log('File deleted!');
-    });
+    if (!this.fs.existsSync(path)) {
+      console.log('Path dosent Exist:' + path);
+      return;
+    }
+    const stats = this.fs.statSync(path);
+    // check if directory
+    if (stats.isDirectory()) {
+      // true
+      this.fs.rmSync(path, { recursive: true, force: true }, (error) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(path + ' Deleted!');
+        }
+      });
+    } else {
+      this.fs.unlink(path, function (err) {
+        if (err) console.log(err);
+        // if no error, file has been deleted successfully
+        console.log('File deleted!');
+      });
+    }
   }
 
   createGeneralFolder(path: string) {

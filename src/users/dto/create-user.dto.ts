@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { EmailAvailable } from './IsEmailAvailable';
+import { PhoneAvailable } from './IsPhoneAvailable';
 import { UniEmailAvailable } from './IsUniEmailUnique';
 
 export class CreateUserDto {
@@ -16,6 +17,14 @@ export class CreateUserDto {
   @IsEmail()
   @UniEmailAvailable({ message: 'Uni Email Already Exists' })
   uni_email: string;
+
+  @ApiProperty({
+    description: 'Phone Number',
+    example: '+92 337033321',
+  })
+  @PhoneAvailable({ message: 'Phone Already Exists' })
+  @IsNotEmpty()
+  phone: string;
 
   // @ApiProperty({ description: 'Registration Status', default: 0 })
   // @IsNotEmpty()

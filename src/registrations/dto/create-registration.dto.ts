@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { UniEmailAvailable } from './IsUniEmailUnique';
 
 export class CreateRegistrationDto {
   @ApiProperty({
@@ -7,6 +8,7 @@ export class CreateRegistrationDto {
     example: 'saad.luqman@dsu.edu.pk',
   })
   @IsEmail()
+  @UniEmailAvailable({ message: 'Duplicate uni_email' })
   uni_email: string;
 
   @ApiProperty({ description: 'first name', example: 'Syed' })
@@ -32,7 +34,7 @@ export class CreateRegistrationDto {
     example: '2018-06-01 00:00:00',
   })
   @IsNotEmpty()
-  resitration_time: Date;
+  registration_time: Date;
 
   @ApiProperty({
     description: 'Time of Graduation',
@@ -44,10 +46,4 @@ export class CreateRegistrationDto {
   @ApiProperty({ description: 'cgpa', example: '3.7' })
   @IsNotEmpty()
   cgpa: number;
-
-  @ApiProperty({ description: 'Count of email sent', example: '0' })
-  email_sent: number;
-
-  @ApiProperty({ description: 'email verified', example: 'false' })
-  email_verified: boolean;
 }

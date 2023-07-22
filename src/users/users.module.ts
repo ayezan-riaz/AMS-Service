@@ -6,11 +6,18 @@ import { User } from './entities/users.entity';
 import { IsEmailAvailable } from './dto/IsEmailAvailable';
 import FilesHelper from 'files/FilesHelper';
 import { IsUniEmailUnique } from './dto/IsUniEmailUnique';
+import { IsPhoneAvailable } from './dto/IsPhoneAvailable';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
   controllers: [UserController],
-  providers: [UserService, IsEmailAvailable, IsUniEmailUnique, FilesHelper],
-  exports: [UserService], //As we need to use userService in other modules apart from usermodule
+  providers: [
+    UserService,
+    IsEmailAvailable,
+    IsPhoneAvailable,
+    IsUniEmailUnique,
+    FilesHelper,
+  ],
+  exports: [UserService, IsEmailAvailable], //As we need to use userService in other modules apart from usermodule
 })
 export class UserModule {}

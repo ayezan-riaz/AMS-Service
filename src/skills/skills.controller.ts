@@ -14,6 +14,8 @@ import {
   FileTypeValidator,
   MaxFileSizeValidator,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { SkillsService } from './skills.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
@@ -94,6 +96,25 @@ export class SkillsController {
   @UseInterceptors(
     SkillsUserInterceptor,
     FileInterceptor('file', {
+      limits: { fileSize: 4 * 1024 * 1024 },
+      fileFilter: (req, file, callback) => {
+        const ext = parse(file.originalname).ext;
+        if (
+          !['.pdf', '.doc', '.html', '.png', '.jpeg', '.jpg', '.docx'].includes(
+            ext,
+          )
+        ) {
+          req.fileValidationError = 'Invalid file type';
+          return callback(
+            new HttpException(
+              'Invalid File Type ' + ext,
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+        return callback(null, true);
+      },
       storage: diskStorage({
         destination: constants.UPLOAD_LOCATION,
         filename: (req: any, file, cb) => {
@@ -115,20 +136,66 @@ export class SkillsController {
   uploadFile(
     @Param('id', ParseIntPipe) id: string,
     @Request() req,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({
-            fileType: '.(pdf|docx|doc|html|png|jpeg|jpg)',
-          }),
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 4 }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     return this.skillsService.updateCertificate(+id, file);
   }
+
+  // @Post(':id/uploadCertificate')
+  // @ApiOkResponse({
+  //   description:
+  //     'Certificate Upload Successfully - Request Body: multipart/form-data, Field Name: file',
+  // })
+  // @UseInterceptors(
+  //   SkillsUserInterceptor,
+  //   FileInterceptor('file', {
+  //     fileFilter: (req, file, callback) => {
+  //       const ext = parse(file.originalname).ext;
+  //       if (ext !== '.png') {
+  //         req.fileValidationError = 'Invalid file type';
+  //         return callback(
+  //           new HttpException('Invalid File Type', HttpStatus.BAD_REQUEST),
+  //           false,
+  //         ); //throw new HttpException('Skill not found', HttpStatus.BAD_REQUEST)
+  //       }
+
+  //       return callback(null, true);
+  //     },
+  //     storage: diskStorage({
+  //       destination: constants.UPLOAD_LOCATION,
+  //       filename: (req: any, file, cb) => {
+  //         req.userId = req.custom.userId;
+  //         const unique = new Date().getTime();
+  //         const fn = parse(file.originalname);
+  //         const filename = `${req.userId}/skillCertificates/${req.params.id}${fn.ext}`;
+  //         const fileSys = new FilesHelper();
+  //         if (req.custom.certificate)
+  //           fileSys.removeFolderOrFile(
+  //             constants.UPLOAD_LOCATION + req.custom.certificate,
+  //           );
+  //         fileSys.createAlumniCertificateFolder({ userId: req.userId });
+  //         cb(null, filename);
+  //       },
+  //     }),
+  //   }),
+  // )
+  // uploadFile(
+  //   @Param('id', ParseIntPipe) id: string,
+  //   @Request() req,
+  //   @UploadedFile(
+  //     new ParseFilePipe({
+  //       validators: [
+  //         new FileTypeValidator({
+  //           fileType: '.(pdf|docx|doc|html|png|jpeg|jpg)',
+  //         }),
+  //         new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 4 }),
+  //       ],
+  //     }),
+  //   )
+  //   file: Express.Multer.File,
+  // ) {
+  //   return this.skillsService.updateCertificate(+id, file);
+  // }
 
   // @UseInterceptors(SkillsUserInterceptor)
   // @Get(':id/test')

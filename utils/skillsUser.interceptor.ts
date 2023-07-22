@@ -3,6 +3,8 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -20,6 +22,8 @@ export class SkillsUserInterceptor implements NestInterceptor {
     const skill_user = await this.skillsService.findSkillWithUser(
       req.params.id,
     );
+    if (!skill_user)
+      throw new HttpException('Skill not found', HttpStatus.BAD_REQUEST);
 
     if (skill_user)
       req.custom = {

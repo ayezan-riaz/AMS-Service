@@ -6,6 +6,7 @@ import { parse } from 'path';
 import { Repository } from 'typeorm';
 import { constants } from 'utils/constants';
 import { CreateUserParams, UpdateUserParams } from 'utils/types';
+import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/users.entity';
 
 @Injectable()
@@ -15,7 +16,7 @@ export class UserService {
     private fileHelper: FilesHelper,
   ) {}
 
-  async create(userDetails: CreateUserParams) {
+  async create(userDetails: CreateUserDto) {
     const newUser = this.userRepository.create({
       ...userDetails,
       role: 2,
@@ -90,6 +91,17 @@ export class UserService {
     else
       throw new HttpException(
         'User not found with email: ' + email,
+        HttpStatus.BAD_REQUEST,
+      );
+  }
+
+  async findByUniEmail(uni_email: string) {
+    console.log('Email seaching ..');
+    const user = await this.userRepository.findOneBy({ uni_email });
+    if (user) return user;
+    else
+      throw new HttpException(
+        'User not found with email: ' + uni_email,
         HttpStatus.BAD_REQUEST,
       );
   }

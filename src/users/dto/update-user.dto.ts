@@ -19,6 +19,13 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @UniEmailAvailable({ message: 'Uni Email Already Exists' })
   uni_email: string;
 
+  @ApiProperty({
+    description: 'Phone Number',
+    example: '+92 337033321',
+  })
+  @IsNotEmpty()
+  phone: string;
+
   @ApiProperty({ description: 'Registration Status', default: 0 })
   @IsNotEmpty()
   registration_status: number;

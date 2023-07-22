@@ -132,6 +132,21 @@ export class UserController {
   })
   @UseInterceptors(
     FileInterceptor('file', {
+      limits: { fileSize: 4 * 1024 * 1024 },
+      fileFilter: (req, file, callback) => {
+        const ext = parse(file.originalname).ext;
+        if (!['.png', '.jpeg', '.jpg'].includes(ext)) {
+          req.fileValidationError = 'Invalid file type';
+          return callback(
+            new HttpException(
+              'Invalid File Type ' + ext,
+              HttpStatus.BAD_REQUEST,
+            ),
+            false,
+          );
+        }
+        return callback(null, true);
+      },
       storage: diskStorage({
         destination: constants.UPLOAD_LOCATION,
         filename: (req: any, file, cb) => {
@@ -150,15 +165,7 @@ export class UserController {
   uploadFile(
     @Param('id', ParseIntPipe) id: string,
     @Request() req,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 4 }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     return this.userService.updateAvatar(+id, file);
   }

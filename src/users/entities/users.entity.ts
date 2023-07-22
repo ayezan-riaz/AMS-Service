@@ -33,6 +33,13 @@ export class User {
   @Column({ type: 'varchar', length: 200, unique: true })
   uni_email: string;
 
+  @ApiProperty({
+    description: 'Phone Number',
+    example: '+92 337033321',
+  })
+  @Column({ type: 'varchar', length: 20, unique: true, nullable: true })
+  phone: string;
+
   @ApiProperty({ description: 'first name', example: 'Syed' })
   @Column()
   first_name: string;
