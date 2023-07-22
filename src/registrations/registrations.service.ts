@@ -50,7 +50,7 @@ export class RegistrationsService {
 
     //change this back once done with frontend
     const reg_user = await this.registrationRepository.findOneBy({ uni_email });
-    return { token: reg_user.uni_token };
+    return { token: reg_user.uni_token, id: reg_user.id };
   }
 
   async validateUniEmail(token: string) {
@@ -163,5 +163,11 @@ export class RegistrationsService {
 
   remove(id: number) {
     return `This action removes a #${id} registration`;
+  }
+
+  async getRegistratonStep({ uni_reg_id }: VerifyUniEmailDto) {
+    let uni_email = uni_reg_id.toLowerCase() + '@dsu.edu.pk';
+    const reg_user = await this.registrationRepository.findOneBy({ uni_email });
+    return { step: reg_user.step };
   }
 }
