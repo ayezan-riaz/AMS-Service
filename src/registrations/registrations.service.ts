@@ -74,7 +74,7 @@ export class RegistrationsService {
         updatedAt,
         ...more
       } = res;
-      return more;
+      return { ...more, step: 2 };
     }
   }
 
@@ -110,7 +110,7 @@ export class RegistrationsService {
       password,
     });
 
-    return other;
+    return { ...other, email_token: my_token };
   }
 
   async validateNewAccountEmail(token: string) {
@@ -165,9 +165,11 @@ export class RegistrationsService {
     return `This action removes a #${id} registration`;
   }
 
-  async getRegistratonStep({ uni_reg_id }: VerifyUniEmailDto) {
-    let uni_email = uni_reg_id.toLowerCase() + '@dsu.edu.pk';
+  async getStepWithId(roll_number: string) {
+    let uni_email = roll_number.toLowerCase() + '@dsu.edu.pk';
     const reg_user = await this.registrationRepository.findOneBy({ uni_email });
-    return { step: reg_user.step };
+    if (!reg_user)
+      throw new HttpException('Invalid roll number', HttpStatus.BAD_REQUEST);
+    return { step: reg_user.step, id: reg_user.id };
   }
 }

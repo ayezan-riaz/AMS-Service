@@ -140,6 +140,16 @@ export class RegistrationsController {
     return this.registrationsService.validateNewAccountEmail(token);
   }
 
+  @Get('getStepWithId/:roll_number')
+  @ApiOkResponse({
+    description: 'Registration Step for Id',
+    type: typeof { step: '3', reg_id: '1' },
+  })
+  @ApiBadRequestResponse({ description: 'Roll Number Not Found' })
+  getStepWithId(@Param('roll_number') roll_number: string) {
+    return this.registrationsService.getStepWithId(roll_number);
+  }
+
   // @Get()
   // findAll() {
   //   return this.registrationsService.findAll();
