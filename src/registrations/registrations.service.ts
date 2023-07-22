@@ -49,7 +49,8 @@ export class RegistrationsService {
     );
 
     //change this back once done with frontend
-    return this.registrationRepository.findOneBy({ uni_email });
+    const reg_user = await this.registrationRepository.findOneBy({ uni_email });
+    return { token: reg_user.uni_token };
   }
 
   async validateUniEmail(token: string) {
