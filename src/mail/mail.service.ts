@@ -13,8 +13,8 @@ export class MailService {
   private async setTransport() {
     const OAuth2 = google.auth.OAuth2;
     const oauth2Client = new OAuth2(
-      this.configService.get('GMAIL_CLIENT_ID'),
-      this.configService.get('GMAIL_CLIENT_SECRET'),
+      process.env.GMAIL_CLIENT_ID,
+      process.env.GMAIL_CLIENT_SECRET,
       'https://developers.google.com/oauthplayground',
     );
 
@@ -25,7 +25,8 @@ export class MailService {
     const accessToken: string = await new Promise((resolve, reject) => {
       oauth2Client.getAccessToken((err, token) => {
         if (err) {
-          reject('Failed to create access token');
+          console.log(err);
+          reject('Opps Failed to create access token');
         }
         resolve(token);
       });
@@ -35,9 +36,9 @@ export class MailService {
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: this.configService.get('GMAIL_EMAIL'),
-        clientId: this.configService.get('GMAIL_CLIENT_ID'),
-        clientSecret: this.configService.get('GMAIL_CLIENT_SECRET'),
+        user: process.env.GMAIL_EMAIL,
+        clientId: process.env.GMAIL_CLIENT_ID,
+        clientSecret: process.env.GMAIL_CLIENT_SECRET,
         accessToken,
       },
     };
