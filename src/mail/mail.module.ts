@@ -11,16 +11,19 @@ import { ConfigService } from '@nestjs/config';
       useFactory: async () => ({
         //transport: 'smtps://user@domain.com:pass@smtp.domain.com',
         transport: {
-          host: process.env.MAIL_HOST || 'smtp.gmail.com',
+          host: process.env.MAIL_HOST || 'smtp.ethereal.email',
+          port: parseInt(process.env.MAIL_PORT) || 587,
+          secure: process.env.MAIL_SECURE == 'true' ? true : false,
           auth: {
-            user: process.env.MAIL_USER || 'syed.saad.luqman.1994@gmail.com',
-            pass: process.env.MAIL_PASSWORD || 'developer12345',
+            user: process.env.MAIL_USER || 'hailee.schamberger@ethereal.email',
+            pass: process.env.MAIL_PASSWORD || 'kMdHkZjVHYFzDGpjz5',
           },
+          tls: { rejectUnauthorized: false },
         },
         preview: true,
         defaults: {
           from: `"DSU Alumni Portal" <${
-            process.env.MAIL_FROM || 'syed.saad.luqman.1994@gmail.com'
+            process.env.MAIL_FROM || 'no-reply@dsu.edu.pk'
           }>`,
           //from: '"syed saad" <syed.saad.luqman.1994@gmail.com>',
         },
