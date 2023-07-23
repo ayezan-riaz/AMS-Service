@@ -46,7 +46,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         },
         preview: true,
         defaults: {
-          from: `"DSU Alumni Portal" <${
+          from: `DSU Alumni Portal <${
             process.env.MAIL_FROM || 'no-reply@dsu.edu.pk'
           }>`,
           //from: '"syed saad" <syed.saad.luqman.1994@gmail.com>',

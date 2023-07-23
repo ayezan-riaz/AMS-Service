@@ -50,7 +50,7 @@ export class MailService {
     const info = await this.mailerService.sendMail({
       //transporterName: 'gmail',
       to: to,
-      from: 'no-reply@dsu.edu.pk',
+      from: 'DSU Alumni Portal <no-reply@dsu.edu.pk>',
       subject: 'Testing Nest Mailermodule with template ✔',
       template: 'welcome', // The `.pug`, `.ejs` or `.hbs` extension is appended automatically.
       context: {
@@ -67,7 +67,7 @@ export class MailService {
     this.mailerService
       .sendMail({
         to: to,
-        from: 'no-reply@dsu.edu.pk',
+        from: 'DSU Alumni Portal <no-reply@dsu.edu.pk>',
         subject:
           type === 'internal'
             ? 'Registration: Alumni Verification'
