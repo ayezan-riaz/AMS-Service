@@ -6,40 +6,65 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 @Global()
 @Module({
   imports: [
-    MailerModule.forRootAsync({
-      useFactory: async () => ({
-        transport: 'smtps://user@domain.com:pass@smtp.domain.com',
-        // transport: {
-        //   host: process.env.MAIL_HOST || 'smtp.ethereal.email',
-        //   port: parseInt(process.env.MAIL_PORT) || 587,
-        //   secure: process.env.MAIL_SECURE == 'true' ? true : false,
-        //   auth: {
-        //     user: process.env.MAIL_USER || 'hailee.schamberger@ethereal.email',
-        //     pass: process.env.MAIL_PASSWORD || 'kMdHkZjVHYFzDGpjz5',
-        //   },
-        //   //tls: { rejectUnauthorized: false },
-        // },
-        preview: true,
-        defaults: {
-          from: `"DSU Alumni Portal" <${
-            process.env.MAIL_FROM || 'no-reply@dsu.edu.pk'
-          }>`,
-          //from: '"syed saad" <syed.saad.luqman.1994@gmail.com>',
+    MailerModule.forRoot({
+      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+      defaults: {
+        from: `"DSU Alumni Portal" <${
+          process.env.MAIL_FROM || 'no-reply@dsu.edu.pk'
+        }>`,
+        //from: '"syed saad" <syed.saad.luqman.1994@gmail.com>',
+      },
+      preview: true,
+      template: {
+        dir: __dirname + '/templates',
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
         },
-        template: {
-          dir: __dirname + '/templates',
-          adapter: new HandlebarsAdapter(),
-          options: {
-            strict: true,
-          },
-        },
-      }),
+      },
     }),
   ],
   providers: [MailService],
   exports: [MailService],
 })
 export class MailModule {}
+
+// @Module({
+//   imports: [
+//     MailerModule.forRootAsync({
+//       useFactory: async () => ({
+//         transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+//         // transport: {
+//         //   host: process.env.MAIL_HOST || 'smtp.ethereal.email',
+//         //   port: parseInt(process.env.MAIL_PORT) || 587,
+//         //   secure: process.env.MAIL_SECURE == 'true' ? true : false,
+//         //   auth: {
+//         //     user: process.env.MAIL_USER || 'hailee.schamberger@ethereal.email',
+//         //     pass: process.env.MAIL_PASSWORD || 'kMdHkZjVHYFzDGpjz5',
+//         //   },
+//         //   //tls: { rejectUnauthorized: false },
+//         // },
+//         preview: true,
+//         defaults: {
+//           from: `"DSU Alumni Portal" <${
+//             process.env.MAIL_FROM || 'no-reply@dsu.edu.pk'
+//           }>`,
+//           //from: '"syed saad" <syed.saad.luqman.1994@gmail.com>',
+//         },
+//         template: {
+//           dir: __dirname + '/templates',
+//           adapter: new HandlebarsAdapter(),
+//           options: {
+//             strict: true,
+//           },
+//         },
+//       }),
+//     }),
+//   ],
+//   providers: [MailService],
+//   exports: [MailService],
+// })
+// export class MailModule {}
 
 // import { Global, Module } from '@nestjs/common';
 // import { MailService } from './mail.service';
