@@ -18,7 +18,7 @@ import { ConfigService } from '@nestjs/config';
             user: process.env.MAIL_USER || 'hailee.schamberger@ethereal.email',
             pass: process.env.MAIL_PASSWORD || 'kMdHkZjVHYFzDGpjz5',
           },
-          tls: { rejectUnauthorized: false },
+          //tls: { rejectUnauthorized: false },
         },
         preview: true,
         defaults: {
