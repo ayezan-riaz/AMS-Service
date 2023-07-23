@@ -48,7 +48,7 @@ export class MailService {
   public async sendMail(to: string) {
     //await this.setTransport();
     const info = await this.mailerService.sendMail({
-      transporterName: 'gmail',
+      //transporterName: 'gmail',
       to: to,
       from: 'no-reply@dsu.edu.pk',
       subject: 'Testing Nest Mailermodule with template ✔',
