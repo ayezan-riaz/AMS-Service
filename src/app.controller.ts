@@ -90,6 +90,11 @@ export class AppController {
     " https://amsbackend-ghub.onrender.com/api "`;
   }
 
+  @Get('message')
+  message() {
+    return `This is a deployed Service Message`;
+  }
+
   @Post('sendMail/:email')
   sendMail(@Param('email') email: string) {
     return this.mailService.sendMail(email);
