@@ -46,7 +46,7 @@ export class MailService {
   }
 
   public async sendMail(to: string) {
-    await this.setTransport();
+    //await this.setTransport();
     this.mailerService
       .sendMail({
         transporterName: 'gmail',
