@@ -8,17 +8,17 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
   imports: [
     MailerModule.forRootAsync({
       useFactory: async () => ({
-        //transport: 'smtps://user@domain.com:pass@smtp.domain.com',
-        transport: {
-          host: process.env.MAIL_HOST || 'smtp.ethereal.email',
-          port: parseInt(process.env.MAIL_PORT) || 587,
-          secure: process.env.MAIL_SECURE == 'true' ? true : false,
-          auth: {
-            user: process.env.MAIL_USER || 'hailee.schamberger@ethereal.email',
-            pass: process.env.MAIL_PASSWORD || 'kMdHkZjVHYFzDGpjz5',
-          },
-          //tls: { rejectUnauthorized: false },
-        },
+        transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+        // transport: {
+        //   host: process.env.MAIL_HOST || 'smtp.ethereal.email',
+        //   port: parseInt(process.env.MAIL_PORT) || 587,
+        //   secure: process.env.MAIL_SECURE == 'true' ? true : false,
+        //   auth: {
+        //     user: process.env.MAIL_USER || 'hailee.schamberger@ethereal.email',
+        //     pass: process.env.MAIL_PASSWORD || 'kMdHkZjVHYFzDGpjz5',
+        //   },
+        //   //tls: { rejectUnauthorized: false },
+        // },
         preview: true,
         defaults: {
           from: `"DSU Alumni Portal" <${
