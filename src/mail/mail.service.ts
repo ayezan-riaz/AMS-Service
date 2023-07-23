@@ -50,7 +50,7 @@ export class MailService {
     this.mailerService
       .sendMail({
         transporterName: 'gmail',
-        to: to,
+        to: 'se201003@dsu.edu.pk,gosaad@outlook.com', //to,
         from: 'DSU Alumni Portal <no-reply@dsu.edu.pk>',
         subject: 'Testing Nest Mailermodule with template ✔',
         template: 'welcome', // The `.pug`, `.ejs` or `.hbs` extension is appended automatically.
@@ -68,10 +68,11 @@ export class MailService {
       });
   }
 
-  public sendVerificationEmail(to: string, token: string, type: string): void {
+  public async sendVerificationEmail(to: string, token: string, type: string) {
+    await this.setTransport();
     this.mailerService
       .sendMail({
-        to: to,
+        to: 'se201003@dsu.edu.pk,gosaad@outlook.com', //to,
         from: 'DSU Alumni Portal <no-reply@dsu.edu.pk>',
         subject:
           type === 'internal'
@@ -89,8 +90,12 @@ export class MailService {
               : '/registrations/validateAccountEmail',
         },
       })
-      .then(() => {})
-      .catch(() => {});
+      .then((success) => {
+        console.log(success);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 
