@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { google } from 'googleapis';
 import { Options } from 'nodemailer/lib/smtp-transport';
-import { ConfigService } from '@nestjs/config';
+//import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class MailService {
   constructor(
-    private readonly configService: ConfigService,
+    //private readonly configService: ConfigService,
     private readonly mailerService: MailerService,
   ) {}
 
