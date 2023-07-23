@@ -1,4 +1,12 @@
-import { Controller, Get, Post, UseGuards, Req, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Req,
+  Body,
+  Param,
+} from '@nestjs/common';
 import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AppService } from './app.service';
@@ -82,8 +90,8 @@ export class AppController {
     " https://amsbackend-ghub.onrender.com/api "`;
   }
 
-  @Post('sendMail')
-  sendMail() {
-    return this.mailService.sendMail('saad90@mailinator.com');
+  @Post('sendMail/:email')
+  sendMail(@Param('email') email: string) {
+    return this.mailService.sendMail(email);
   }
 }
