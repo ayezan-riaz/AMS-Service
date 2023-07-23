@@ -2,15 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { google } from 'googleapis';
 import { Options } from 'nodemailer/lib/smtp-transport';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class MailService {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly mailerService: MailerService,
+  ) {}
 
   private async setTransport() {
     const OAuth2 = google.auth.OAuth2;
     const oauth2Client = new OAuth2(
-      process.env.GMAIL_CLIENT_ID,
-      process.env.GMAIL_CLIENT_SECRET,
+      this.configService.get('GMAIL_CLIENT_ID'),
+      this.configService.get('GMAIL_CLIENT_SECRET'),
       'https://developers.google.com/oauthplayground',
     );
 
@@ -31,9 +35,9 @@ export class MailService {
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: process.env.GMAIL_EMAIL,
-        clientId: process.env.GMAIL_CLIENT_ID,
-        clientSecret: process.env.GMAIL_CLIENT_SECRET,
+        user: this.configService.get('GMAIL_EMAIL'),
+        clientId: this.configService.get('GMAIL_CLIENT_ID'),
+        clientSecret: this.configService.get('GMAIL_CLIENT_SECRET'),
         accessToken,
       },
     };
@@ -43,6 +47,7 @@ export class MailService {
   public async sendMail(to: string) {
     await this.setTransport();
     const info = await this.mailerService.sendMail({
+      transporterName: 'gmail',
       to: to,
       from: 'no-reply@dsu.edu.pk',
       subject: 'Testing Nest Mailermodule with template ✔',
