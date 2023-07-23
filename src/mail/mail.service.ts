@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { google } from 'googleapis';
+//import { google } from 'googleapis';
 import { Options } from 'nodemailer/lib/smtp-transport';
 //import { ConfigService } from '@nestjs/config';
 @Injectable()
