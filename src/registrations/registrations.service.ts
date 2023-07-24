@@ -5,6 +5,7 @@ import { MailService } from 'src/mail/mail.service';
 import { UserService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { CreateRegistrationDto } from './dto/create-registration.dto';
+import { TokenDto } from './dto/token.dto';
 import { UpdateRegistrationDto } from './dto/update-registration.dto';
 import { VerifyNewAccountDto } from './dto/verify-new-account.dto';
 import { VerifyUniEmailDto } from './dto/verify-uni-email.dto';
@@ -51,6 +52,30 @@ export class RegistrationsService {
     //change this back once done with frontend
     const reg_user = await this.registrationRepository.findOneBy({ uni_email });
     return { token: reg_user.uni_token, id: reg_user.id };
+  }
+
+  async getUniEmailTokenData({ token }: TokenDto) {
+    //check if token is validated or not
+    const reg_user = await this.registrationRepository.findOne({
+      where: { uni_token: token, uni_verified: true },
+    });
+    if (!reg_user)
+      throw new HttpException(
+        'Invalid Token or Not Verified',
+        HttpStatus.BAD_REQUEST,
+      );
+    const {
+      uni_email_sent,
+      uni_token,
+      uni_verified,
+      email_sent,
+      email_token,
+      email_verified,
+      createdAt,
+      updatedAt,
+      ...more
+    } = reg_user;
+    return more;
   }
 
   async validateUniEmail(token: string) {

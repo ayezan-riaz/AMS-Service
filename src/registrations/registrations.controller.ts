@@ -35,6 +35,20 @@ import { parse } from 'path';
 import FilesHelper from 'files/FilesHelper';
 import { VerifyUniEmailDto } from './dto/verify-uni-email.dto';
 import { VerifyNewAccountDto } from './dto/verify-new-account.dto';
+import { TokenDto } from './dto/token.dto';
+
+// const tokenData = {
+//   id: 1,
+//   uni_email: 'se121@gmail.com',
+//   first_name: 'Saad',
+//   middle_name: 'Sud',
+//   last_name: 'Syed',
+//   qualification: 'Bachelor',
+//   area: 'Computer Science',
+//   registration_time: '2018-06-01 00:00:00',
+//   graduation_time: '2018-06-01 00:00:00',
+//   cgpa: 3.27,
+// };
 
 @ApiTags('Registration')
 @Controller('registrations')
@@ -113,6 +127,16 @@ export class RegistrationsController {
   @Post('verifyUniversityEmail')
   sendMail(@Body() verifyUniEmailDta: VerifyUniEmailDto) {
     return this.registrationsService.verifyUniEmail(verifyUniEmailDta);
+  }
+
+  @Post('getUniversityEmailTokenData')
+  @ApiOkResponse({
+    description: 'Token is Valid',
+    type: Registration,
+  })
+  @ApiBadRequestResponse({ description: 'Invalid Token or Not Verified' })
+  getUniTokenData(@Body() tokenData: TokenDto) {
+    return this.registrationsService.getUniEmailTokenData(tokenData);
   }
 
   @Get('validateUniEmail')
