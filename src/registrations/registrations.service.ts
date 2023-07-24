@@ -88,18 +88,18 @@ export class RegistrationsService {
         { id: res.id },
         { uni_verified: true, step: 2 },
       );
-      const {
-        email_token,
-        email_verified,
-        email_sent,
-        uni_verified,
-        uni_token,
-        uni_email_sent,
-        createdAt,
-        updatedAt,
-        ...more
-      } = res;
-      return { ...more, step: 2 };
+      // const {
+      //   email_token,
+      //   email_verified,
+      //   email_sent,
+      //   uni_verified,
+      //   uni_token,
+      //   uni_email_sent,
+      //   createdAt,
+      //   updatedAt,
+      //   ...more
+      // } = res;
+      return 'Your University Email Account has been Verified please Proceed with the registration';
     }
   }
 
@@ -169,7 +169,7 @@ export class RegistrationsService {
         email,
         regId,
         ...more,
-        step: step != 4 ? step + 1 : step,
+        step: 4,
       };
     }
   }
