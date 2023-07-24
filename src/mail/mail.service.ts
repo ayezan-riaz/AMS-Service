@@ -72,6 +72,7 @@ export class MailService {
     await this.setTransport();
     this.mailerService
       .sendMail({
+        transporterName: 'gmail',
         to: 'se201003@dsu.edu.pk,gosaad@outlook.com', //to,
         from: 'DSU Alumni Portal <no-reply@dsu.edu.pk>',
         subject:
