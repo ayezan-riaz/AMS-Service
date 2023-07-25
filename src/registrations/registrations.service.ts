@@ -152,17 +152,16 @@ export class RegistrationsService {
         'Invalid Token or Not Verified',
         HttpStatus.BAD_REQUEST,
       );
+
     const {
-      uni_email_sent,
-      uni_token,
-      uni_verified,
-      email_sent,
-      email_token,
-      email_verified,
+      password,
+      role,
+      active_status,
+      registration_status,
       createdAt,
       updatedAt,
       ...more
-    } = reg_user;
+    } = await this.userService.findByUniEmail(reg_user.uni_email);
     return more;
   }
 
