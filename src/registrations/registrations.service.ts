@@ -99,7 +99,7 @@ export class RegistrationsService {
       //   updatedAt,
       //   ...more
       // } = res;
-      return 'Your University Email Account has been Verified please Proceed with the registration';
+      return 'Your University Email Account has been Verified please Proceed with the Registration';
     }
   }
 
@@ -125,7 +125,11 @@ export class RegistrationsService {
       { step: 3, email_token: my_token },
     );
 
-    const { password: pwd, ...other } = await this.userService.create({
+    const {
+      password: pwd,
+      id: uid,
+      ...other
+    } = await this.userService.create({
       uni_email,
       phone,
       first_name,
@@ -135,7 +139,31 @@ export class RegistrationsService {
       password,
     });
 
-    return { ...other, email_token: my_token };
+    return { user_id: uid, token: my_token };
+  }
+
+  async getNewAccountTokenData({ token }: TokenDto) {
+    //check if token is validated or not
+    const reg_user = await this.registrationRepository.findOne({
+      where: { email_token: token, email_verified: true },
+    });
+    if (!reg_user)
+      throw new HttpException(
+        'Invalid Token or Not Verified',
+        HttpStatus.BAD_REQUEST,
+      );
+    const {
+      uni_email_sent,
+      uni_token,
+      uni_verified,
+      email_sent,
+      email_token,
+      email_verified,
+      createdAt,
+      updatedAt,
+      ...more
+    } = reg_user;
+    return more;
   }
 
   async validateNewAccountEmail(token: string) {
@@ -148,29 +176,31 @@ export class RegistrationsService {
         { id: res.id },
         { email_verified: true, step: 4 },
       );
-      const {
-        email_sent,
-        email_token,
-        email_verified,
-        uni_email_sent,
-        uni_token,
-        uni_verified,
-        createdAt,
-        updatedAt,
-        step,
-        id: regId,
-        ...more
-      } = res;
-      const { email, id: userId } = await this.userService.findByUniEmail(
-        more.uni_email,
-      );
-      return {
-        userId,
-        email,
-        regId,
-        ...more,
-        step: 4,
-      };
+      // const {
+      //   email_sent,
+      //   email_token,
+      //   email_verified,
+      //   uni_email_sent,
+      //   uni_token,
+      //   uni_verified,
+      //   createdAt,
+      //   updatedAt,
+      //   step,
+      //   id: regId,
+      //   ...more
+      // } = res;
+      // const { email, id: userId } = await this.userService.findByUniEmail(
+      //   more.uni_email,
+      // );
+
+      return 'Your Public Email Account has been Verified please Proceed with the Registration';
+      // return {
+      //   userId,
+      //   email,
+      //   regId,
+      //   ...more,
+      //   step: 4,
+      // };
     }
   }
 

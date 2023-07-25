@@ -36,6 +36,7 @@ import FilesHelper from 'files/FilesHelper';
 import { VerifyUniEmailDto } from './dto/verify-uni-email.dto';
 import { VerifyNewAccountDto } from './dto/verify-new-account.dto';
 import { TokenDto } from './dto/token.dto';
+import { User } from 'src/users/entities/users.entity';
 
 // const tokenData = {
 //   id: 1,
@@ -152,6 +153,16 @@ export class RegistrationsController {
   @Post('registerAccount')
   sendAccountRequest(@Body() verifyNewAccountDto: VerifyNewAccountDto) {
     return this.registrationsService.verifyNewAccountEmail(verifyNewAccountDto);
+  }
+
+  @Post('getEmailTokenData')
+  @ApiOkResponse({
+    description: 'Token is Valid',
+    type: User,
+  })
+  @ApiBadRequestResponse({ description: 'Invalid Token or Not Verified' })
+  getEmailTokenData(@Body() tokenData: TokenDto) {
+    return this.registrationsService.getNewAccountTokenData(tokenData);
   }
 
   @Get('validateAccountEmail')
