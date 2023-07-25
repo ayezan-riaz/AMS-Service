@@ -44,7 +44,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         //   },
         //   //tls: { rejectUnauthorized: false },
         // },
-        preview: true,
+        preview: false,
         defaults: {
           from: `DSU Alumni Portal <${
             process.env.MAIL_FROM || 'no-reply@dsu.edu.pk'
