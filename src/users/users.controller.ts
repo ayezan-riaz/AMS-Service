@@ -89,6 +89,16 @@ export class UserController {
     return this.userService.findOneWithAcademics(+id);
   }
 
+  @Get(':id/experiences')
+  @ApiOkResponse({
+    description: 'User with Experience by Id',
+    type: 'user with Experience',
+  })
+  @ApiBadRequestResponse({ description: 'User Not Found' })
+  findOneE(@Param('id') id: string) {
+    return this.userService.findOneWithExperiences(+id);
+  }
+
   @Get(':id/profile')
   @ApiOkResponse({
     description: 'User with Profile by Id',
