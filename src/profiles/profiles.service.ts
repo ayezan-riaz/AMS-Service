@@ -48,6 +48,19 @@ export class ProfilesService {
     return this.profileRepository.find();
   }
 
+  async findAllforUser(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    return this.profileRepository.findOne({
+      where: {
+        user: {
+          id,
+        },
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.profileRepository.findOne({
       where: { id },

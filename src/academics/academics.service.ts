@@ -31,6 +31,19 @@ export class AcademicsService {
     return this.academicsRepository.find();
   }
 
+  async findAllforUser(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    return this.academicsRepository.find({
+      where: {
+        user: {
+          id,
+        },
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.academicsRepository.findOneBy({ id });
   }

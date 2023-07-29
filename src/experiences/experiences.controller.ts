@@ -45,6 +45,15 @@ export class ExperiencesController {
     return this.experiencesService.findAll();
   }
 
+  @Get('user/:userId')
+  @ApiOkResponse({
+    description: 'All Experience for a User',
+    type: [Experience],
+  })
+  findAllforUser(@Param('userId') id: string) {
+    return this.experiencesService.findAllforUser(+id);
+  }
+
   @Get(':id')
   @ApiOkResponse({ description: 'Experience by Id', type: Experience })
   @ApiBadRequestResponse({ description: 'Exp Not Found' })

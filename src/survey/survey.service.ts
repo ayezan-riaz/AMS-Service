@@ -36,6 +36,19 @@ export class SurveyService {
     return this.surveyRepository.find();
   }
 
+  async findAllforUser(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    return this.surveyRepository.findOne({
+      where: {
+        user: {
+          id,
+        },
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.surveyRepository.findOne({
       where: { id },

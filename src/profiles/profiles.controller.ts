@@ -57,6 +57,15 @@ export class ProfilesController {
     return this.profilesService.findAll();
   }
 
+  @Get('user/:userId')
+  @ApiOkResponse({
+    description: 'Profile for a User',
+    type: [Profile],
+  })
+  findAllforUser(@Param('userId') id: string) {
+    return this.profilesService.findAllforUser(+id);
+  }
+
   @Get(':id')
   @ApiOkResponse({ description: 'Profile by Id', type: Profile })
   @ApiBadRequestResponse({ description: 'Profile Not Found' })

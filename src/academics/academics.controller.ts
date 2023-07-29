@@ -45,6 +45,15 @@ export class AcademicsController {
     return this.academicsService.findAll();
   }
 
+  @Get('user/:userId')
+  @ApiOkResponse({
+    description: 'All Academic for a User',
+    type: [Academic],
+  })
+  findAllforUser(@Param('userId') id: string) {
+    return this.academicsService.findAllforUser(+id);
+  }
+
   @Get(':id')
   @ApiOkResponse({ description: 'Academic by Id', type: Academic })
   @ApiBadRequestResponse({ description: 'Academic Not Found' })

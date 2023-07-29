@@ -32,6 +32,19 @@ export class ExperiencesService {
     return this.experienceRepository.find();
   }
 
+  async findAllforUser(id: number) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user)
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    return this.experienceRepository.find({
+      where: {
+        user: {
+          id,
+        },
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.experienceRepository.findOneBy({ id });
   }

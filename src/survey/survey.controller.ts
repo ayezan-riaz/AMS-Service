@@ -42,6 +42,15 @@ export class SurveyController {
     return this.surveyService.findAll();
   }
 
+  @Get('user/:userId')
+  @ApiOkResponse({
+    description: 'Survey for a User',
+    type: [Survey],
+  })
+  findAllforUser(@Param('userId') id: string) {
+    return this.surveyService.findAllforUser(+id);
+  }
+
   @Get(':id')
   @ApiOkResponse({ description: 'Survey by Id', type: Survey })
   @ApiBadRequestResponse({ description: 'Survey Not Found' })
