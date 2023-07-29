@@ -10,6 +10,14 @@ export class CreateExperienceDto {
   @IsNotEmpty()
   designation: string;
 
+  @ApiProperty({ description: 'status', example: 'Contract' })
+  @IsNotEmpty()
+  status: string;
+
+  @ApiProperty({ description: 'nature of job', example: 'Federal Government' })
+  @IsNotEmpty()
+  nature_of_job: string;
+
   @ApiProperty({ description: 'start year', example: '2020-12-25 05:00:00' })
   @IsNotEmpty()
   start_year: Date;
