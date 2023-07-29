@@ -3,6 +3,7 @@ import { Academic } from 'src/academics/entities/academic.entity';
 import { Experience } from 'src/experiences/entities/experience.entity';
 import { Profile } from 'src/profiles/entities/profile.entity';
 import { Skill } from 'src/skills/entities/skill.entity';
+import { Survey } from 'src/survey/entities/survey.entity';
 import {
   Column,
   CreateDateColumn,
@@ -82,6 +83,9 @@ export class User {
 
   @OneToOne(() => Profile, (profile) => profile.user)
   profile: Profile;
+
+  @OneToOne(() => Survey, (survey) => survey.user)
+  survey: Survey;
 
   @OneToMany(() => Academic, (academic) => academic.user)
   academics: Academic[];

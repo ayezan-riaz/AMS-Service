@@ -84,6 +84,16 @@ export class UserService {
     else throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
   }
 
+  async findOneWithSurvey(id: number) {
+    //const user = await this.userRepository.findOneBy({ id }); or
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['survey'],
+    });
+    if (user) return user;
+    else throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+  }
+
   async findOneWithProfile(id: number) {
     //const user = await this.userRepository.findOneBy({ id }); or
     const user = await this.userRepository.findOne({
