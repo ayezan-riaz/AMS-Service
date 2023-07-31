@@ -38,6 +38,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsNotEmpty()
   password: string;
 
+  @ApiProperty({ description: 'Password Reset Token', example: '12345678' })
+  @IsNotEmpty()
+  password_reset_token: string;
+
   @ApiProperty({ description: 'first name', example: 'Syed' })
   @IsNotEmpty()
   first_name: string;

@@ -25,7 +25,7 @@ export class MailService {
     const accessToken: string = await new Promise((resolve, reject) => {
       oauth2Client.getAccessToken((err, token) => {
         if (err) {
-          console.log(err);
+          //console.log(err);
           reject('Opps Failed to create access token');
         }
         resolve(token);
@@ -46,7 +46,13 @@ export class MailService {
   }
 
   public async sendMail(to: string) {
-    await this.setTransport();
+    try {
+      await this.setTransport();
+    } catch (err) {
+      console.log(err);
+      console.log('Email HALT');
+      return;
+    }
     this.mailerService
       .sendMail({
         transporterName: 'gmail',
@@ -69,7 +75,13 @@ export class MailService {
   }
 
   public async sendVerificationEmail(to: string, token: string, type: string) {
-    await this.setTransport();
+    try {
+      await this.setTransport();
+    } catch (err) {
+      console.log(err);
+      console.log('Email HALT');
+      return;
+    }
     this.mailerService
       .sendMail({
         transporterName: 'gmail',
@@ -89,6 +101,37 @@ export class MailService {
             type === 'internal'
               ? '/registrations/validateUniEmail'
               : '/registrations/validateAccountEmail',
+        },
+      })
+      .then((success) => {
+        console.log(success);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  public async sendPasswordConfirmationEmail(to: string, token: string) {
+    try {
+      await this.setTransport();
+    } catch (err) {
+      console.log(err);
+      console.log('Email HALT');
+      return;
+    }
+    this.mailerService
+      .sendMail({
+        transporterName: 'gmail',
+        to: 'se201003@dsu.edu.pk,gosaad@outlook.com', //to,
+        from: 'DSU Alumni Portal <no-reply@dsu.edu.pk>',
+        subject: 'Password Change Request Confirmation',
+        template: 'AlumniPasswordChange', // The `.pug`, `.ejs` or `.hbs` extension is appended automatically.
+        context: {
+          // Data to be sent to template engine.
+          token,
+          username: 'Alumni Name',
+          domain: process.env.DOMAIN || 'https://alumni.dsu.edu.pk',
+          link: process.env.FORGOT_PASS_PATH,
         },
       })
       .then((success) => {

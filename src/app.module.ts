@@ -19,6 +19,7 @@ import { RegistrationsModule } from './registrations/registrations.module';
 import { Registration } from './registrations/entities/registration.entity';
 import { SurveyModule } from './survey/survey.module';
 import { Survey } from './survey/entities/survey.entity';
+import { DoesEmailExist } from './auth/dto/DoesEmailExists';
 
 @Module({
   imports: [

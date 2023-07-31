@@ -6,13 +6,16 @@ import {
   Req,
   Body,
   Param,
+  Query,
 } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { AuthUser } from './auth/decorator/user.decorator';
+import { ApplyResetPasswordDto } from './auth/dto/apply-reset-password.dto';
 import { LoginDto } from './auth/dto/login.dto';
+import { ResetPasswordDto } from './auth/dto/reset-password.dto';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { MailService } from './mail/mail.service';
@@ -49,7 +52,7 @@ export class AppController {
   @Post('login')
   @ApiOkResponse({
     description: 'Profile by Id',
-    type: Promise<{ access_token: string }>,
+    type: typeof { message: 'asda' },
   })
   @ApiBadRequestResponse({
     description: 'Authentication Failed',
@@ -71,6 +74,32 @@ export class AppController {
     //return this.appService.getHello();
   }
   */
+  @Post('applyPasswordReset')
+  @ApiOkResponse({
+    description: 'Reset Password',
+    type: Promise<{ reset_token: string }>,
+  })
+  //  login(@Req() req: Request): Promise<{ access_token: string }> { // adding @Body tag just for swagger docs
+  applyResetPassword(@Body() applyPasswordReset: ApplyResetPasswordDto) {
+    //console.log(req); //local strategy return the user after validating it
+    // TODO: return JWT access Token once user is validated
+    return this.authService.applyResetPassword(applyPasswordReset);
+  }
+
+  @Post('resetPassword')
+  @ApiOkResponse({
+    description: 'Reset Password',
+    type: typeof true,
+  })
+  //  login(@Req() req: Request): Promise<{ access_token: string }> { // adding @Body tag just for swagger docs
+  resetPassword(
+    @Query('token') token: string,
+    @Body() resetPassDto: ResetPasswordDto,
+  ) {
+    //console.log(req); //local strategy return the user after validating it
+    // TODO: return JWT access Token once user is validated
+    return this.authService.resetPassword(token, resetPassDto);
+  }
 
   //GET /protected (after login & if not login show error)
   @UseGuards(JwtAuthGuard)

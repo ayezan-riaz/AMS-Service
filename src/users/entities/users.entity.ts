@@ -73,6 +73,13 @@ export class User {
   @Column({ default: constants.DEFAULT_AVATAR })
   avatar: string;
 
+  @ApiProperty({
+    description: 'password reset token',
+    example: '40charsrc92oqaltm6bwgzf1idgon0wiak0u0o64',
+  })
+  @Column({ length: 40, nullable: true })
+  password_reset_token: string;
+
   @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;

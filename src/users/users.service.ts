@@ -105,12 +105,23 @@ export class UserService {
   }
 
   async findByEmail(email: string) {
-    console.log('Email seaching ..');
     const user = await this.userRepository.findOneBy({ email });
     if (user) return user;
     else
       throw new HttpException(
         'User not found with email: ' + email,
+        HttpStatus.BAD_REQUEST,
+      );
+  }
+
+  async findByToken(token: string) {
+    const user = await this.userRepository.findOneBy({
+      password_reset_token: token,
+    });
+    if (user) return user;
+    else
+      throw new HttpException(
+        'User not found with token: ' + token,
         HttpStatus.BAD_REQUEST,
       );
   }
@@ -127,7 +138,18 @@ export class UserService {
   }
 
   update(id: number, userDetails: UpdateUserParams) {
-    return this.userRepository.update({ id }, { ...userDetails, role: 1 });
+    return this.userRepository.update({ id }, { ...userDetails });
+  }
+
+  updatePassword(id: number, password: string) {
+    return this.userRepository.update(
+      { id },
+      { password, password_reset_token: null },
+    );
+  }
+
+  updatePasswordToken(id: number, password_reset_token: string) {
+    return this.userRepository.update({ id }, { password_reset_token });
   }
 
   async updateAvatar(id: number, file: Express.Multer.File) {
