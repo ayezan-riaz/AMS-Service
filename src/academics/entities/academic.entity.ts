@@ -56,6 +56,22 @@ export class Academic {
   @Column()
   status: string;
 
+  @ApiProperty({
+    description: 'has certificate',
+    nullable: true,
+    default: false,
+  })
+  @Column()
+  has_certificate: boolean;
+
+  @ApiProperty({ description: 'certificate', nullable: true })
+  @Column({ nullable: true })
+  certificate: string;
+
+  @ApiProperty({ description: 'certificate link', nullable: true })
+  @Column({ nullable: true })
+  certificate_link: string;
+
   @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;

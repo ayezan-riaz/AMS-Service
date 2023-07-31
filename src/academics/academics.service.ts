@@ -58,4 +58,19 @@ export class AcademicsService {
   remove(id: number) {
     return this.academicsRepository.delete(id);
   }
+
+  async updateCertificate(id: number, file: Express.Multer.File) {
+    return this.academicsRepository.update(
+      { id },
+      { certificate: file.filename, has_certificate: true },
+    );
+  }
+
+  async findAcademicsWithUser(id: number) {
+    let academics = await this.academicsRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    return academics;
+  }
 }

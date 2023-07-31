@@ -46,4 +46,17 @@ export class CreateAcademicDto {
   @IsNotEmpty()
   status: string;
   /* score unit */
+
+  @ApiProperty({ description: 'has certificate', default: false })
+  has_certificate: boolean;
+
+  @ApiProperty({ description: 'certificate', required: false, default: null })
+  certificate: string;
+
+  @ApiProperty({
+    description: 'certificate link',
+    required: false,
+    default: null,
+  })
+  certificate_link: string;
 }

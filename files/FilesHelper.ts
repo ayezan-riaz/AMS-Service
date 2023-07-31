@@ -35,6 +35,16 @@ export default class {
     return false;
   }
 
+  createAlumniAcademicsFolder(createdUser: any) {
+    let dir = this.workDir + createdUser.userId + '/academicCertificates'; //path;
+    //console.log(dir);
+    if (!this.fs.existsSync(dir)) {
+      this.fs.mkdirSync(dir, { recursive: true });
+      return true;
+    }
+    return false;
+  }
+
   createAlumniResumeFolder(createdUser: any) {
     let dir = this.workDir + createdUser.userId + '/profileResume'; //path;
     //console.log(dir);

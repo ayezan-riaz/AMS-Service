@@ -47,4 +47,18 @@ export class UpdateAcademicDto extends PartialType(CreateAcademicDto) {
   @ApiProperty({ description: 'status', example: 'Completed' })
   @IsNotEmpty()
   status: string;
+
+  @ApiProperty({ description: 'has certificate', default: false })
+  @IsNotEmpty()
+  has_certificate: boolean;
+
+  @ApiProperty({ description: 'certificate', required: false, default: null })
+  certificate: string;
+
+  @ApiProperty({
+    description: 'certificate link',
+    required: false,
+    default: null,
+  })
+  certificate_link: string;
 }
