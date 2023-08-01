@@ -13,7 +13,6 @@ export class UpdateAcademicDto extends PartialType(CreateAcademicDto) {
   qualification: string;
 
   @ApiProperty({ description: 'area', example: 'Computer Science' })
-  @IsNotEmpty()
   area: string;
 
   @ApiProperty({ description: 'institute', example: 'DHA Suffa University' })
@@ -37,11 +36,9 @@ export class UpdateAcademicDto extends PartialType(CreateAcademicDto) {
   end_year: Date;
 
   @ApiProperty({ description: 'score', example: '3.7' })
-  @IsNotEmpty()
   score: string;
 
   @ApiProperty({ description: 'score unit', example: 'cgpa' })
-  @IsNotEmpty()
   score_unit: string;
 
   @ApiProperty({ description: 'status', example: 'Completed' })

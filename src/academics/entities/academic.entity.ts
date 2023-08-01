@@ -25,7 +25,7 @@ export class Academic {
   qualification: string;
 
   @ApiProperty({ description: 'area', example: 'Computer Science' })
-  @Column()
+  @Column({ nullable: true })
   area: string;
 
   @ApiProperty({ description: 'institute', example: 'DHA Suffa University' })
@@ -45,11 +45,11 @@ export class Academic {
   end_year: Date;
 
   @ApiProperty({ description: 'score', example: '3.7' })
-  @Column()
+  @Column({ nullable: true })
   score: string;
 
   @ApiProperty({ description: 'score unit', example: 'cgpa' })
-  @Column()
+  @Column({ nullable: true })
   score_unit: string;
 
   @ApiProperty({ description: 'status', example: 'Completed' })

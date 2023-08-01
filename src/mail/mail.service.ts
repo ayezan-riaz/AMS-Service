@@ -130,7 +130,7 @@ export class MailService {
           // Data to be sent to template engine.
           token,
           username: 'Alumni Name',
-          domain: process.env.DOMAIN || 'https://alumni.dsu.edu.pk',
+          domain: process.env.FRONT_DOMAIN || 'https://alumni.dsu.edu.pk',
           link: process.env.FORGOT_PASS_PATH,
         },
       })
