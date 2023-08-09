@@ -7,9 +7,11 @@ import { IsEmailAvailable } from './dto/IsEmailAvailable';
 import FilesHelper from 'files/FilesHelper';
 import { IsUniEmailUnique } from './dto/IsUniEmailUnique';
 import { IsPhoneAvailable } from './dto/IsPhoneAvailable';
+//import { ProfilesService } from 'src/profiles/profiles.service';
+import { Profile } from 'src/profiles/entities/profile.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([Profile, User])],
   controllers: [UserController],
   providers: [
     UserService,
@@ -17,6 +19,7 @@ import { IsPhoneAvailable } from './dto/IsPhoneAvailable';
     IsPhoneAvailable,
     IsUniEmailUnique,
     FilesHelper,
+    //ProfilesService,
   ],
   exports: [UserService, IsEmailAvailable], //As we need to use userService in other modules apart from usermodule
 })

@@ -1,10 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { validate } from 'class-validator';
 import FilesHelper from 'files/FilesHelper';
-import { parse } from 'path';
+import { Profile } from 'src/profiles/entities/profile.entity';
 import { Repository } from 'typeorm';
-import { constants } from 'utils/constants';
 import { CreateUserParams, UpdateUserParams } from 'utils/types';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
@@ -13,6 +11,7 @@ import { User } from './entities/users.entity';
 @Injectable()
 export class UserService {
   constructor(
+    @InjectRepository(Profile) private profileRepository: Repository<Profile>,
     @InjectRepository(User) private userRepository: Repository<User>,
     private fileHelper: FilesHelper,
   ) {}
@@ -192,15 +191,15 @@ export class UserService {
     }
 
     const { date_of_birth, country, timezone, ...more } = userProfileDetails;
-    if (country) user.profile.country = country;
-    if (date_of_birth) user.profile.date_of_birth = date_of_birth;
-    if (timezone) user.profile.timezone = timezone;
-    await this.userRepository.save(user);
+    // if (country) user.profile.country = country;
+    // if (date_of_birth) user.profile.date_of_birth = date_of_birth;
+    // if (timezone) user.profile.timezone = timezone;
+    await this.profileRepository.update(user.profile.id, {
+      date_of_birth,
+      country,
+      timezone,
+    });
     return this.userRepository.update({ id }, { ...more });
-    // return this.userRepository.update(
-    //   { id },
-    //   { profile: { date_of_birth, country, timezone } },
-    // );
   }
 
   updatePassword(id: number, password: string) {

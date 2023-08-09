@@ -10,9 +10,10 @@ import { UserService } from 'src/users/users.service';
 import { User } from 'src/users/entities/users.entity';
 import FilesHelper from 'files/FilesHelper';
 import { IsPhoneAvailable } from 'src/users/dto/IsPhoneAvailable';
+import { Profile } from 'src/profiles/entities/profile.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Registration, User])],
+  imports: [TypeOrmModule.forFeature([Registration, User, Profile])],
   controllers: [RegistrationsController],
   providers: [
     RegistrationsService,
