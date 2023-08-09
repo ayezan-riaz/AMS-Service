@@ -35,6 +35,7 @@ import { Skill } from 'src/skills/entities/skill.entity';
 import { DeleteResult } from 'typeorm';
 import { constants } from 'utils/constants';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/users.entity';
 import { UserService } from './users.service';
@@ -134,6 +135,16 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.update(+id, updateUserDto);
+  }
+
+  @Patch(':userId/withProfile')
+  @ApiCreatedResponse({ description: 'User + Profile Update' })
+  @ApiBadRequestResponse({ description: 'User + Profile Update Failed' })
+  updateWithProfile(
+    @Param('userId', ParseIntPipe) id: string,
+    @Body() updateUserProfileDto: UpdateUserProfileDto,
+  ) {
+    return this.userService.updateWithProfile(+id, updateUserProfileDto);
   }
 
   @Delete(':id')

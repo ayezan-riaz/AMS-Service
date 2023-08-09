@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { constants } from 'utils/constants';
 import { CreateUserParams, UpdateUserParams } from 'utils/types';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import { User } from './entities/users.entity';
 
 @Injectable()
@@ -139,6 +140,67 @@ export class UserService {
 
   update(id: number, userDetails: UpdateUserParams) {
     return this.userRepository.update({ id }, { ...userDetails });
+  }
+
+  async updateWithProfile(
+    id: number,
+    userProfileDetails: UpdateUserProfileDto,
+  ) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['profile'],
+    });
+
+    if (!user.profile)
+      throw new HttpException(
+        'First Create a Profile Befor Updating It: ',
+        HttpStatus.BAD_REQUEST,
+      );
+    if (userProfileDetails.email) {
+      const emailUser = await this.userRepository.findOneBy({
+        email: userProfileDetails.email,
+      });
+      if (emailUser && emailUser.id !== user.id)
+        // check if email exist and it is not of update user
+        throw new HttpException(
+          'User found with email: ' + userProfileDetails.email,
+          HttpStatus.BAD_REQUEST,
+        );
+    }
+    if (userProfileDetails.uni_email) {
+      const uniEmailUser = await this.userRepository.findOneBy({
+        uni_email: userProfileDetails.uni_email,
+      });
+      if (uniEmailUser && uniEmailUser.id !== user.id)
+        // check if uni_email exist and it is not of the update user
+        throw new HttpException(
+          'User found with uni email: ' + userProfileDetails.uni_email,
+          HttpStatus.BAD_REQUEST,
+        );
+    }
+
+    if (userProfileDetails.phone) {
+      const phoneUser = await this.userRepository.findOneBy({
+        phone: userProfileDetails.phone,
+      });
+      if (phoneUser && phoneUser.id !== user.id)
+        // check if phone exist and it is not of the update user
+        throw new HttpException(
+          'User found with phone: ' + userProfileDetails.phone,
+          HttpStatus.BAD_REQUEST,
+        );
+    }
+
+    const { date_of_birth, country, timezone, ...more } = userProfileDetails;
+    if (country) user.profile.country = country;
+    if (date_of_birth) user.profile.date_of_birth = date_of_birth;
+    if (timezone) user.profile.timezone = timezone;
+    await this.userRepository.save(user);
+    return this.userRepository.update({ id }, { ...more });
+    // return this.userRepository.update(
+    //   { id },
+    //   { profile: { date_of_birth, country, timezone } },
+    // );
   }
 
   updatePassword(id: number, password: string) {

@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
 import { EmailAvailable } from './IsEmailAvailable';
+import { PhoneAvailable } from './IsPhoneAvailable';
 import { UniEmailAvailable } from './IsUniEmailUnique';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
@@ -23,6 +24,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'Phone Number',
     example: '+92 337033321',
   })
+  @PhoneAvailable({ message: 'Phone Already Exists' })
   phone: string;
 
   @ApiProperty({ description: 'Registration Status', default: 0 })
