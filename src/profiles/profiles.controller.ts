@@ -123,11 +123,16 @@ export class ProfilesController {
           const fn = parse(file.originalname);
           const filename = `${req.userId}/profileResume/${req.params.id}${fn.ext}`;
           const fileSys = new FilesHelper();
-          if (req.custom.resume)
+          if (req.custom.resume) {
+            console.log('deleting folder: Start');
             fileSys.removeFolderOrFile(
               constants.UPLOAD_LOCATION + req.custom.resume,
             );
+            console.log('deleting folder: End');
+          }
+          console.log('creating folder: Start');
           fileSys.createAlumniResumeFolder({ userId: req.userId });
+          console.log('creating folder: End');
           cb(null, filename);
         },
       }),
