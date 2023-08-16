@@ -58,7 +58,7 @@ export default class {
   removeFolderOrFile(path: string) {
     if (!this.fs.existsSync(path)) {
       console.log('Path dosent Exist:' + path);
-      return;
+      return false;
     }
     const stats = this.fs.statSync(path);
     // check if directory
@@ -71,12 +71,14 @@ export default class {
           console.log(path + ' Deleted!');
         }
       });
+      return true;
     } else {
       this.fs.unlink(path, function (err) {
         if (err) console.log(err);
         // if no error, file has been deleted successfully
         console.log('File deleted!');
       });
+      return true;
     }
   }
 
