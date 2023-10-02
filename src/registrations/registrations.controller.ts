@@ -37,6 +37,8 @@ import { VerifyUniEmailDto } from './dto/verify-uni-email.dto';
 import { VerifyNewAccountDto } from './dto/verify-new-account.dto';
 import { TokenDto } from './dto/token.dto';
 import { User } from 'src/users/entities/users.entity';
+import { parse as csvParse } from 'csv-parse';
+import * as fs from 'fs';
 
 // const tokenData = {
 //   id: 1,
@@ -95,8 +97,8 @@ export class RegistrationsController {
     FileInterceptor('file', {
       limits: { fileSize: 4 * 1024 * 1024 },
       fileFilter: (req, file, callback) => {
-        const ext = parse(file.originalname).ext;
-        if (!['.csv', '.xls', '.xlsx'].includes(ext)) {
+        const ext = parse(file.originalname).ext.toLowerCase();
+        if (!['.csv'].includes(ext)) {
           req.fileValidationError = 'Invalid file type';
           return callback(
             new HttpException(
@@ -121,8 +123,49 @@ export class RegistrationsController {
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return { status: 'Uploaded', file: file.filename };
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    type rec = { id: number; fname: string; lname: string };
+    const headers = ['id', 'fname', 'lname'];
+    const records: rec[] = [];
+    const csvFilePath = constants.UPLOAD_LOCATION + file.filename;
+    const fileContent = fs.readFileSync(csvFilePath, { encoding: 'utf-8' });
+    let readError = 'No Error';
+    //console.log(fileContent);
+
+    const parser = csvParse(fileContent, {
+      delimiter: ',',
+      columns: headers,
+      trim: true,
+      skip_empty_lines: true,
+    });
+
+    parser
+      .on('readable', function () {
+        // Use the readable stream api to consume records
+        let record: rec;
+        while ((record = parser.read()) !== null) {
+          records.push(record);
+        }
+      })
+      .on('error', function (err) {
+        // Catch any error
+        let x = this.pause();
+        console.log(err.message);
+        readError = err.message;
+        console.log('Saad');
+        //throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+      })
+      .on('end', function () {
+        // On Complete
+        console.log(records);
+      });
+
+    return {
+      readError,
+      records,
+      status: 'Uploaded',
+      file: constants.UPLOAD_LOCATION + file.filename,
+    };
   }
 
   @Post('verifyUniversityEmail')
